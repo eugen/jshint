@@ -206,7 +206,7 @@
  JSHINT, json, jquery, jQuery, keys, label, labelled, last, lastcharacter, lastsemic, laxbreak,
  laxcomma, latedef, lbp, led, left, length, line, load, loadClass, localStorage, location,
  log, loopfunc, m, match, max, maxcomplexity, maxdepth, maxerr, maxlen, maxstatements, maxparams,
- member, message, meta, module, moveBy, moveTo, mootools, multistr, name, navigator, new, newcap,
+ member, message, meta, mixedindent, module, moveBy, moveTo, mootools, multistr, name, navigator, new, newcap,
  nestedBlockDepth, noarg, node, noempty, nomen, nonew, nonstandard, nud, onbeforeunload, onblur,
  onerror, onevar, onecase, onfocus, onload, onresize, onunload, open, openDatabase, openURL,
  opener, opera, options, outer, param, parent, parseFloat, parseInt, passfail, plusplus,
@@ -285,6 +285,7 @@ var JSHINT = (function () {
             laxcomma    : true, // if line breaks should not be checked around commas
             loopfunc    : true, // if functions should be allowed to be defined within
                                 // loops
+            mixedindent : true, // Tolerate mixed tabs and spaces indentation
             mootools    : true, // if MooTools globals should be predefined
             multistr    : true, // allow multiline strings
             newcap      : true, // if constructor names must be capitalized
@@ -1098,10 +1099,11 @@ var JSHINT = (function () {
             // If smarttabs option is used check for spaces followed by tabs only.
             // Otherwise check for any occurence of mixed tabs and spaces.
             // Tabs and one space followed by block comment is allowed.
-            if (option.smarttabs)
-                at = s.search(/ \t/);
-            else
-                at = s.search(/ \t|\t [^\*]/);
+            if (!option.mixedindent)
+                if (option.smarttabs)
+                    at = s.search(/ \t/);
+                else
+                    at = s.search(/ \t|\t [^\*]/);
 
             if (at >= 0)
                 warningAt("Mixed spaces and tabs.", line, at + 1);
